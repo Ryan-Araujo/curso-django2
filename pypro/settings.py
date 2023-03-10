@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'pypro.base',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
