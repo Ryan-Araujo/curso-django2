@@ -14,6 +14,9 @@ from pathlib import Path
 from decouple import config, Csv
 from dj_database_url import parse as db_url
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -75,6 +78,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pypro.wsgi.application'
+# confuguração Django Debug Toolbar
+
+INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default='127.0.0.1')
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
 
 
 # Database
@@ -131,4 +142,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS = ['https://django-pypro2-projeto.fly.dev']
+#CSRF_TRUSTED_ORIGINS = ['https://django-pypro2-projeto.fly.dev']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SENTRY_DSN = config('SENTRY_DSN', default=None)
+
+if SENTRY_DSN:
+    sentry_sdk.init(dsn=SENTRY_DSN,integrations=[DjangoIntegration()])
