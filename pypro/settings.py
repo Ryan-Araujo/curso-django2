@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pypro.base',
+    'pypro.aperitivos',
 ]
 
 
